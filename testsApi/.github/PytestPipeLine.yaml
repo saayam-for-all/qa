@@ -1,0 +1,49 @@
+name: Run webapp and Selenium tests
+
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    branches: ["test"]
+  pull_request:
+    branches: ["test"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install and start React app
+      working-directory: ./webapp
+      run: |
+        npm install
+        npm run build &
+        sleep 10  
+        npm run dev &
+        sleep 10  # espera a que el servidor de Vite esté listo
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run pytest
+      env:
+        PYTHONUNBUFFERED: 1
+      run: |
+        pytest 
