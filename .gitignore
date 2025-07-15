@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.venv
+venv/
+.Python
+
+# Selenium logs 
+selenium-debug.log
+
+# VSCode / JetBrains
+.vscode/
+.idea/
+
+# Node
+node_modules/
+dist/
+npm-debug.log*
+
+# Coverage / pytest
+.cache/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Output de nohup o scripts
+nohup.out
