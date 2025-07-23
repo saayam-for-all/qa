@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 class LandingPage:
     def __init__(self, driver):
         self.driver = driver
-        self.url = "http://localhost:5173/"
+        self.url = "https://test-saayam.netlify.app/"
 
     def go_to(self):
         self.driver.get(self.url)
