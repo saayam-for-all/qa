@@ -1,13 +1,10 @@
 name: Run webapp and Selenium tests
 
 on:
-  # Triggers the workflow on push or pull request events
   push:
     branches: ["test"]
   pull_request:
     branches: ["test"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -26,22 +23,32 @@ jobs:
     - name: Install and start React app
       working-directory: ./webapp
       run: |
-            npm install
-            npm run build
-            npm run preview &  # o npx serve dist &
-            sleep 10
+        npm install
+        npm run build
+        nohup npm run preview &  # Evita que el preview bloquee el hilo
+        sleep 10
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
 
+    - name: Install system dependencies (Chrome)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
+    - name: Install ChromeDriver
+      uses: nanasess/setup-chromedriver@v2
+
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install pytest selenium webdriver-manager
 
     - name: Run pytest
       env:
         PYTHONUNBUFFERED: 1
       run: |
-        pytest 
+        pytest
