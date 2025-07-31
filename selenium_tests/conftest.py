@@ -6,7 +6,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 @pytest.fixture(scope="session")
 def driver():
     options = webdriver.ChromeOptions()
+    options.add_argument("--headless")   #new
     options.add_argument("--start-maximized")
+    options.add_argument("--user-data-dir=/tmp/chrome") #new
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
     yield driver
