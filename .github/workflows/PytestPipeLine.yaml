@@ -26,16 +26,14 @@ jobs:
     - name: Install and start React app
       working-directory: ./webapp
       run: |
-        npm install
-        npm run build &
-        sleep 10  
-        npm run dev &
-        sleep 10  # espera a que el servidor de Vite esté listo
-
+            npm install
+            npm run build
+            npm run preview &  # o npx serve dist &
+            sleep 10
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.13.0
+        python-version: 3.11
 
     - name: Install Python dependencies
       run: |
