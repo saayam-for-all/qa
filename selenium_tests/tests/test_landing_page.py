@@ -1,5 +1,7 @@
 import time
+import pytest
 from pages.landing_page import LandingPage
+
 
 def test_landing_page_heading(driver):
     page = LandingPage(driver)
