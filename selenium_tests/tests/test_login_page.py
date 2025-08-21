@@ -1,6 +1,9 @@
 from pages.login_page import LoginPage
 from logger import get_logger
 import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 logger = get_logger("TestLoginPage")
 
@@ -103,15 +106,16 @@ def test_invalid_credentials(driver):
     time.sleep(1)
 
 def test_successful_login(driver):
-
     logger.info("[TC_LOGIN_008] Verify Successful Login")
 
     page = LoginPage(driver)
     page.go_to()
     page.login("asrffcwxbiozrwlhry@xfavaj.com", "Qwerty@12345")
-    time.sleep(3)
+
+    WebDriverWait(driver, 60).until(
+        EC.url_contains("/dashboard")
+    )
 
     assert "/dashboard" in driver.current_url.lower(), "Log In unsuccessful"
     logger.info("[TC_LOGIN_008] ✅ Passed")
-    time.sleep(1)
 
