@@ -1,9 +1,12 @@
+import pytest
+pytestmark = pytest.mark.order("last")
 from pages.login_page import LoginPage
 from logger import get_logger
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 
 logger = get_logger("TestLoginPage")
 

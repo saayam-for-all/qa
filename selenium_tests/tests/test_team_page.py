@@ -1,6 +1,5 @@
 import time
 import pytest
-from pages.landing_page import LandingPage
 from pages.ourteam_page import OurTeamPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -9,12 +8,10 @@ from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.fixture
 def team_page(driver):
-    page = LandingPage(driver)
+    page = OurTeamPage(driver)
     page.go_to()
-    page.click_about_us()
-    page.click_our_team()
     time.sleep(5)
-    return OurTeamPage(driver)
+    return page
 
 def test_our_team_page(team_page):
     current_url = team_page.get_url()
@@ -49,13 +46,11 @@ def test_linkedin_links_redirection(team_page):
         team_page.driver.close()
         team_page.driver.switch_to.window(original_window)
 
-@pytest.mark.parametrize("width, height", [(1920, 1080), (768, 1024), (414, 896)])
+@pytest.mark.parametrize("width, height", [(768, 1024), (414, 896), (1920, 1080)])
 def test_responsive_layout_across_viewports(driver, width, height):
     driver.set_window_size(width, height)
-    page = LandingPage(driver)
+    page = OurTeamPage(driver)
     page.go_to()
-    page.click_about_us()
-    page.click_our_team()
     time.sleep(10)
 
     exec_cards = OurTeamPage(driver).get_exec_member_cards()
