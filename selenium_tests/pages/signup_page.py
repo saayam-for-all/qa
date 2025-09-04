@@ -75,6 +75,15 @@ class SignUpPage:
 
     def lastname_blank_error(self):
         return self.driver.find_element(By.XPATH, "//p[contains(text(),'Last name is required')]").text
+    
+    def email_blank_error(self):
+        return self.driver.find_element(By.XPATH, "//p[contains(text(),'Email is required')]").text
+    
+    def phonenumber_blank_error(self):
+        return self.driver.find_element(By.XPATH, "//p[contains(text(),'Phone number is required')]").text
+    
+    def confirmpassword_blank_error(self):
+        return self.driver.find_element(By.XPATH, "//p[contains(text(),'Confirm password is required')]").text
 
     def lastname_invalid_error(self):
         return self.driver.find_element(By.XPATH, "//p[contains(text(),'Last name must contain only alphabets and spaces')]").text

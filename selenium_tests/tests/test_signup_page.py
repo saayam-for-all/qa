@@ -117,3 +117,29 @@ def test_password_lowercase_requirement(driver):
     assert status == "green", "Lowercase requirement should be green when lowercase letters are present"
 
     logger.info("[TC_LOGIN_007] ✅ Passed")
+
+def test_empty_fields_error(driver):
+    logger.info("[TC_LOGIN_008] Verify empty or blank field Error")
+
+    page=SignUpPage(driver);
+    page.go_to()
+
+    page.click_tnc_checkbox()
+    page.click_signup_button()
+    time.sleep(1)
+
+    firstname_blank_err = page.firstname_blank_error()
+    lastname_blank_err = page.lastname_blank_error()
+    email_blank_err = page.email_blank_error()
+    phonenumber_blank_err = page.phonenumber_blank_error()
+    password_blank_err = page.confirmpassword_blank_error()
+    time.sleep(3)
+
+    assert "First name is required" in firstname_blank_err, "First name required error not displayed"
+    assert "Last name is required" in lastname_blank_err, "Last name required error not displayed"
+    assert "Email is required" in email_blank_err, "Email required error not displayed"
+    assert "Phone number is required" in phonenumber_blank_err, "Phone number required error not displayed"
+    assert "Confirm password is required" in password_blank_err, "Confirm password required error not displayed"
+
+    logger.info("[TC_LOGIN_008] ✅ Passed")
+
