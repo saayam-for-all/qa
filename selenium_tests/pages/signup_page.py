@@ -69,6 +69,12 @@ class SignUpPage:
 
     def firstname_invalid_error(self):
         return self.driver.find_element(By.XPATH, "//p[contains(text(),'First name must contain only alphabets and spaces')]").text
+    
+    def firstname_blank_error(self):
+        return self.driver.find_element(By.XPATH, "//p[contains(text(),'First name is required')]").text
+
+    def lastname_blank_error(self):
+        return self.driver.find_element(By.XPATH, "//p[contains(text(),'Last name is required')]").text
 
     def lastname_invalid_error(self):
         return self.driver.find_element(By.XPATH, "//p[contains(text(),'Last name must contain only alphabets and spaces')]").text
