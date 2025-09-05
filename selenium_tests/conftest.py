@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+# Supported device emulations
 DEVICES = {
     "desktop": None,
     "iphone": "iPhone 12 Pro",
@@ -14,14 +15,18 @@ def create_driver(device=None):
     options = webdriver.ChromeOptions()
 
     if device and DEVICES[device] is not None:
+        # Enable mobile emulation
         mobile_emulation = {"deviceName": DEVICES[device]}
         options.add_experimental_option("mobileEmulation", mobile_emulation)
+    else:
+        # Maximize browser window for desktop
+        options.add_argument("--start-maximized")
 
-    # Run headless by default for all devices
-    options.add_argument("--headless=new")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
+    # Headless mode and stability options
+    #options.add_argument("--headless=new")
+    #options.add_argument("--disable-gpu")
+    #options.add_argument("--no-sandbox")
+    #options.add_argument("--disable-dev-shm-usage")
 
     service = Service(ChromeDriverManager().install())
     return webdriver.Chrome(service=service, options=options)
