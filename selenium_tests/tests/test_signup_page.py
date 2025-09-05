@@ -106,12 +106,12 @@ def test_password_lowercase_requirement(driver):
     page = SignUpPage(driver)
     page.go_to()
 
-    page.enter_password("PASSWORD123")  
+    page.enter_textfield_value("password","PASSWORD123")  
     time.sleep(1)
     status = page.get_lowercase_requirement_status()
     assert status == "red", "Lowercase requirement should be red when no lowercase letters"
     
-    page.enter_password("Password123") 
+    page.enter_textfield_value("password","Password123") 
     time.sleep(1)
     status = page.get_lowercase_requirement_status()
     assert status == "green", "Lowercase requirement should be green when lowercase letters are present"
@@ -142,4 +142,107 @@ def test_empty_fields_error(driver):
     assert "Confirm password is required" in password_blank_err, "Confirm password required error not displayed"
 
     logger.info("[TC_LOGIN_008] ✅ Passed")
+
+def test_password_uppercase_requirement(driver):
+    logger.info("[TC_LOGIN_009] Verify password uppercase letter requirement")
+    page = SignUpPage(driver)
+    page.go_to()
+
+    page.enter_textfield_value("password","password")  
+    time.sleep(2)
+    status = page.get_uppercase_requirement_status()
+    assert status == "red", "Uppercase requirement should be red when no uppercase letters"
+    
+    page.enter_textfield_value("password","Password") 
+    time.sleep(2)
+    status = page.get_uppercase_requirement_status()
+    assert status == "green", "Uppercase requirement should be green when uppercase letters are present"
+
+    logger.info("[TC_LOGIN_009] ✅ Passed")
+
+def test_invalid_email_format(driver):
+    logger.info("[TC_LOGIN_010] Verify invalid email format error message")
+
+    page=SignUpPage(driver)
+    page.go_to()
+
+    page.enter_textfield_value("email","test@wrong")
+    page.click_tnc_checkbox()
+    page.click_signup_button()
+    time.sleep(1)
+
+    email_error = page.get_invalid_email_format_error()
+    assert "Invalid email address" in email_error, "Invalid email format error not displayed"
+    
+    logger.info("[TC_LOGIN_010] ✅ Passed")
+
+def test_invalid_phonenumber(driver):
+    logger.info("[TC_LOGIN_011] Verify invalid phone number error message")
+
+    page=SignUpPage(driver)
+    page.go_to()
+
+    page.enter_textfield_value("phone","1234567")
+    time.sleep(1)
+
+    phonenumber_error = page.phonenumber_invalid_error()
+    assert "Please enter a valid phone number" in phonenumber_error, "Invalid phone number error not displayed"
+    
+    logger.info("[TC_LOGIN_011] ✅ Passed")
+
+def test_password_minlength(driver):
+    logger.info("[TC_LOGIN_012] Verify password minimum allowed length")
+
+    page=SignUpPage(driver)
+    page.go_to()
+
+    page.enter_textfield_value("password","Pass12")
+    time.sleep(1)
+    status = page.get_password_min_length_status()
+    assert status == "red", "Password length requirement should be red when length is less than 8 characters"
+
+    page.enter_textfield_value("password","Password1")
+    time.sleep(1)
+    status = page.get_password_min_length_status()
+    assert status == "green", "Password length requirement should be green when length is greater than or equal to 8 characters"
+    
+    logger.info("[TC_LOGIN_012] ✅ Passed")
+
+def test_password_number_requirement(driver):
+    logger.info("[TC_LOGIN_013] Verify password contains atleast one number requirement")
+
+    page=SignUpPage(driver)
+    page.go_to()
+
+    page.enter_textfield_value("password","Password")
+    time.sleep(1)
+    status = page.get_password_number_status()
+    assert status == "red", "Password number requirement should be red when numbers are not present"
+
+    page.enter_textfield_value("password","Password1")
+    time.sleep(1)
+    status = page.get_password_number_status()
+    assert status == "green", "Password number requirement should be green when number is present"
+    
+    logger.info("[TC_LOGIN_013] ✅ Passed")
+
+def test_password_special_character_requirement(driver):
+    logger.info("[TC_LOGIN_014] Verify password contains atleast one special character requirement")
+
+    page=SignUpPage(driver)
+    page.go_to()
+
+    page.enter_textfield_value("password","Password")
+    time.sleep(1)
+    status = page.get_password_specialcharacter_status()
+    assert status == "red", "Password requirement should be red when special characters are not present"
+
+    page.enter_textfield_value("password","Password@")
+    time.sleep(1)
+    status = page.get_password_specialcharacter_status()
+    assert status == "green", "Password requirement should be green when special character is present"
+    
+    logger.info("[TC_LOGIN_014] ✅ Passed")
+
+
 

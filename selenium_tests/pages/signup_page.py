@@ -82,6 +82,9 @@ class SignUpPage:
     def phonenumber_blank_error(self):
         return self.driver.find_element(By.XPATH, "//p[contains(text(),'Phone number is required')]").text
     
+    def phonenumber_invalid_error(self):
+        return self.driver.find_element(By.XPATH, "//p[contains(text(),'Please enter a valid phone number')]").text
+    
     def confirmpassword_blank_error(self):
         return self.driver.find_element(By.XPATH, "//p[contains(text(),'Confirm password is required')]").text
 
@@ -119,20 +122,55 @@ class SignUpPage:
                 (By.XPATH, "//p[contains(text(),'Passwords do not match')]"))).text
 
 
-    def enter_password(self, password):
+    def enter_textfield_value(self, Id, text_value):
+        """Method to enter the text value in the text field"""
+        text_input = WebDriverWait(self.driver, 10).until( EC.visibility_of_element_located((By.ID, Id)))
+        text_input.send_keys(text_value)
 
-        password_input = WebDriverWait(self.driver, 10).until( EC.visibility_of_element_located((By.ID, "password")))
-        password_input.click()
-        password_input.send_keys(password)
-
-    def get_lowercase_requirement_status(self):
-        """Return 'red' or 'green' depending on the lowercase requirement color."""
-        elem = WebDriverWait(self.driver, 5).until(
-            EC.visibility_of_element_located((By.XPATH, "//p[contains(text(),'Password must contain at least 1 lowercase letter.')]")))
-        
-        classes = elem.get_attribute("class")
+    def get_password_requirement_status(self,element):
+        """Return password requirement status"""
+        classes = element.get_attribute("class")
         if "text-red-500" in classes:
             return "red"
         elif "text-green-500" in classes:
             return "green"
         return "unknown"
+
+    def get_lowercase_requirement_status(self):
+        """Return 'red' or 'green' depending on the lowercase requirement color."""
+        elem = WebDriverWait(self.driver, 5).until(
+            EC.visibility_of_element_located((By.XPATH, "//p[contains(text(),'Password must contain at least 1 lowercase letter.')]")))
+        return self.get_password_requirement_status(elem)
+        
+    
+    def get_uppercase_requirement_status(self):
+        """Return 'red' or 'green' depending on the uppercase requirement color."""
+        elem = WebDriverWait(self.driver, 8).until(
+            EC.visibility_of_element_located((By.XPATH, "//p[contains(., 'uppercase')]")))
+        return self.get_password_requirement_status(elem)
+    
+    def get_password_min_length_status(self):
+        """Return 'red' or 'green' depending on the password length atleast 8 characters requirement color."""
+        elem = WebDriverWait(self.driver, 8).until(
+            EC.visibility_of_element_located((By.XPATH, "//p[contains(., 'at least 8 characters.')]"))
+        )
+        return self.get_password_requirement_status(elem)
+
+    def get_password_number_status(self):
+        """Return 'red' or 'green' depending on the password contain atleast 1 number requirement color."""
+        elem = WebDriverWait(self.driver, 8).until(
+            EC.visibility_of_element_located((By.XPATH, "//p[contains(., 'Password must contain at least 1 number.')]"))
+        )
+        return self.get_password_requirement_status(elem)
+
+    def get_password_specialcharacter_status(self):
+        """Return 'red' or 'green' depending on the password contain atleast 1 special character requirement color."""
+        elem = WebDriverWait(self.driver, 8).until(
+            EC.visibility_of_element_located((By.XPATH, "//p[contains(., 'at least 1 special character.')]"))
+        )
+        return self.get_password_requirement_status(elem)
+        
+    def get_invalid_email_format_error(self):
+        """Get the invalid email address error message."""
+        return WebDriverWait(self.driver, 5).until( EC.visibility_of_element_located(
+                (By.XPATH, "//p[contains(text(),'Invalid email address')]"))).text
