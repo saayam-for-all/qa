@@ -70,6 +70,9 @@ pip install -r requirements.txt
 
 ```bash
 pytest tests --html=report.html
+python -m pytest --device=iphone --html=reports/iphone_test_report.html
+python -m pytest --device=pixel --html=reports/pixel_test_report.html
+python -m pytest --device=samsung --html=reports/samsung_test_report.html
 ```
 
 ### View HTML Report
