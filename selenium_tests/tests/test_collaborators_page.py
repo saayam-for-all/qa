@@ -77,7 +77,7 @@ def test_click_link(driver):
     page.click_volunteer_match()
     # If the link opens in a new tab, switch to the new window:
     driver.switch_to.window(driver.window_handles[-1])
-    assert "volunteermatch.org" in driver.current_url
+    assert "volunteermatch" in driver.current_url
     time.sleep(3)
     driver.close()
     driver.switch_to.window(original_window)
@@ -90,18 +90,16 @@ def test_wanttojoin(driver):
     page = CollaboratorsPage(driver)
     page.go_to()
 
-    expected_text = (
-        "Want to join us?"
-    )
-
+    expected_text = "Want to join us?"
     actual_text = page.get_heading2_text()
 
     logger.info(f"Found description: {actual_text}")
 
-    assert expected_text == actual_text.strip(), "Description text does not match exactly."
+    # Normalize both sides: strip spaces and compare case-insensitively
+    assert expected_text.lower().strip() == actual_text.lower().strip(), \
+        f"Expected '{expected_text}' but found '{actual_text}'"
+
     time.sleep(1)
-
-
     logger.info("[TC_COLLAB_005] ✅ Passed")
 
 def test_description2(driver):

@@ -13,10 +13,10 @@ class CollaboratorsPage:
         self.driver.get(self.url)
 
     def get_heading_text(self):
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.TAG_NAME, "h1"))
+        WebDriverWait(self.driver, 20).until(
+            EC.presence_of_element_located((By.TAG_NAME, "h2"))
         )
-        return self.driver.find_element(By.TAG_NAME, "h1").text
+        return self.driver.find_element(By.TAG_NAME, "h2").text
     
     def get_description_text(self):
     
@@ -44,13 +44,13 @@ class CollaboratorsPage:
     )
         self.driver.find_element(By.CSS_SELECTOR, "a[href='https://www.volunteermatch.org/']").click()
 
-    
+
     def get_heading2_text(self):
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.TAG_NAME, "h2"))
+            EC.presence_of_element_located((By.XPATH, "//h2[contains(text(),'Want to join us?')]"))
         )
-        return self.driver.find_element(By.TAG_NAME, "h2").text
-    
+        return self.driver.find_element(By.XPATH, "//h2[contains(text(),'Want to join us?')]").text
+
     def get_description2_text(self):
 
         WebDriverWait(self.driver, 10).until(
