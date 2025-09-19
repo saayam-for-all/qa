@@ -184,6 +184,7 @@ def test_invalid_phonenumber(driver):
 
     page.enter_textfield_value("phone","1234567")
     time.sleep(1)
+    page.click_tnc_checkbox()
 
     phonenumber_error = page.phonenumber_invalid_error()
     assert "Please enter a valid phone number" in phonenumber_error, "Invalid phone number error not displayed"
