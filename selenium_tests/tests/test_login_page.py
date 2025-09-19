@@ -101,7 +101,7 @@ def test_invalid_credentials(driver):
     page = LoginPage(driver)
     page.go_to()
     page.login("invalid@example.com", "WrongPass123")
-    time.sleep(1)
+    time.sleep(3)
 
     error_message = page.get_login_error()
     assert "Invalid email or password" in error_message, "Invalid credentials error not displayed"
