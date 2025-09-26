@@ -1,16 +1,16 @@
-# pages/signup_page.py
+# pages/dashboard_page.py
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from login_page import LoginPage
+from pages.login_page import LoginPage
 
 
 class DashboardPage:
     def __init__(self, driver):
         self.driver = driver
-        self.url = "https://test-saayam.netlify.app/signup"
+        self.url = "https://test-saayam.netlify.app/dashboard"
     
     def go_to(self):
         self.driver.get(self.url)
