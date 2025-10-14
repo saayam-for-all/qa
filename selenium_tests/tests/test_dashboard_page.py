@@ -12,7 +12,7 @@ from pages.dashboard_page import DashboardPage
 logger = get_logger("TestDashboardPage")
 
 def test_dashboard_load(driver):
-    logger.info("[TC_LOGIN_001] Verify dashboard page opens cleanly after login")
+    logger.info("[TC_DASH_001] Verify dashboard page opens cleanly after login")
     page = DashboardPage(driver)
     page.login_and_open("saayamqa@yahoo.com","Saayamforall@123")
     time.sleep(5)
