@@ -1,31 +1,30 @@
-Installation
-
-To install Playwright, you can use the following command:
-
-```bash
-npm install playwright
-```
-
-This will install Playwright and its necessary dependencies.
-
 Getting Started
 
-To get started with this project, clone the repository and install dependencies:
+To get started with this project, clone the repository and switch to the E2E testing branch:
 
 ```bash
-git clone <repository-url>
-cd <repository-name>
+git clone https://github.com/saayam-for-all/qa.git
+cd qa
+git checkout e2e-playwright-suite
 npm install
 npx playwright install
 ```
 
-To pull the latest changes from the GitHub repository, use the following command:
+Installation
+
+The above commands will:
+1. Clone the repository from GitHub
+2. Switch to the E2E testing branch
+3. Install project dependencies (including Playwright)
+4. Install Playwright browser binaries
+
+To pull the latest changes from the E2E testing branch, use the following command:
 
 ```bash
-git pull origin main
+git pull origin e2e-playwright-suite
 ```
 
-This will fetch and integrate changes from the remote repository to your local repository.
+This will fetch and integrate changes from the remote E2E testing branch to your local repository.
 
 Running Tests
 
