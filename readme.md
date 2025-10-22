@@ -1,14 +1,3 @@
-
-Pulling from GitHub
-
-To pull the latest changes from the GitHub repository, use the following command:
-
-```bash
-git pull origin {brnach_name}
-```
-
-This will fetch and integrate changes from the remote repository to your local repository.
-
 Installation
 
 To install Playwright, you can use the following command:
@@ -18,6 +7,25 @@ npm install playwright
 ```
 
 This will install Playwright and its necessary dependencies.
+
+Getting Started
+
+To get started with this project, clone the repository and install dependencies:
+
+```bash
+git clone <repository-url>
+cd <repository-name>
+npm install
+npx playwright install
+```
+
+To pull the latest changes from the GitHub repository, use the following command:
+
+```bash
+git pull origin main
+```
+
+This will fetch and integrate changes from the remote repository to your local repository.
 
 Running Tests
 
