@@ -10,11 +10,19 @@
     "test:headed": "playwright test --headed",
     "codegen": "playwright codegen"
   },
-  "keywords": ["playwright", "e2e", "testing", "qa"],
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "qa"
+  ],
   "author": "Sriabhinay Kusuma",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.9.1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
   }
 }
