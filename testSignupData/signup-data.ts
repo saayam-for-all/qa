@@ -6,7 +6,7 @@ export const signupTestData = {
   validUser: {
     firstName: 'Test',
     lastName: 'User',
-    email: `testuser@example.com`,
+    email: 'saayamqa@yahoo.com',
     phone: '4374893033',
     password: 'Test@1234',
     confirmPassword: 'Test@1234',
