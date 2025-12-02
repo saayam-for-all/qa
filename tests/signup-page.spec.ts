@@ -99,6 +99,15 @@ test.describe('Saayam Signup Page Tests', () => {
       await expect(signupPage.loginText).toBeVisible();
       await expect(signupPage.loginLink).toBeEnabled();
     });
+
+    test('should load correctly on mobile viewport', async ({ browser }) => {
+      await signupPage.page.setViewportSize({ width: 375, height: 812 });
+      await signupPage.goto();
+      await expect(signupPage.heading).toBeVisible();
+      const form = signupPage.page.locator('div.flex.items-center.h-full.justify-center');
+      await expect(form).toBeVisible();
+    });
+
   });
 
   // Group 2: Navigation Links
@@ -175,6 +184,16 @@ test.describe('Saayam Signup Page Tests', () => {
 
       const duplicateError = signupPage.page.locator('p:has-text("User already exists. Please sign in or use a different email.")');
       await expect(duplicateError).toBeVisible();
+    });
+
+    test('Password visibility toggle icon Validation', async ({ page }) => {
+      const toggleIcon = page.locator('//input[@id="password"]/following-sibling::button');
+      await expect(toggleIcon).toBeVisible();
+      const toggleButton = page.locator("div[class='my-2 flex flex-col relative'] button svg");
+      await toggleButton.click();
+      expect(await page.locator('#password').getAttribute('type')).toBe('text');
+      await toggleButton.click();
+      expect(await page.locator('#password').getAttribute('type')).toBe('password');
     });
 
     // Password requirement validations
