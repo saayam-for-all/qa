@@ -17,22 +17,24 @@ class SignupPage {
   readonly loginLink: Locator;
   readonly termsLink:Locator;
   readonly country:Locator;
+  readonly emailExists:Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.heading = page.locator('h1.my-4.text-3xl.font-bold.text-center');
-    this.firstName = page.locator('input[id="firstName"]');
-    this.lastName = page.locator('input[id="lastName"]');
-    this.email = page.locator('input[id="email"]');
-    this.phone = page.locator('input[id="phone"]');
-    this.password = page.locator('input[id="password"]');
-    this.confirmPassword = page.locator('input[id="confirmPassword"]');
-    this.signupButton = page.getByText('Sign up', { exact: true });
-    this.termsCheckbox = page.locator("//input[@type='checkbox']");
+    this.heading = page.getByRole('heading', { name: 'Sign Up' });
+    this.firstName = page.getByRole('textbox', { name: 'First Name' });
+    this.lastName = page.getByRole('textbox', { name: 'Last Name' });
+    this.email = page.getByRole('textbox', { name: 'Email' });
+    this.phone = page.getByRole('textbox', { name: 'Phone Number' });
+    this.password =page.getByRole('textbox', { name: 'Password', exact: true });
+    this.confirmPassword = page.getByRole('textbox', { name: 'Confirm Password' });
+    this.signupButton = page.getByRole('button', { name: 'Sign up' });
+    this.termsCheckbox = page.getByRole('checkbox');
     this.loginText = page.getByText('Already have an account?', { exact: true });
     this.loginLink = page.getByRole('button', { name: 'Log In' });
-    this.termsLink = page.locator('a').filter({ hasText: 'Terms and Conditions' }).first();
-    this.country = page.locator('#country');
+    this.termsLink = page.getByRole('main').getByRole('link', { name: 'Terms and Conditions' });
+    this.country = page.getByLabel('country');
+    this.emailExists = page.getByText('User already exists. Please');
   }
 
   goto() {
@@ -78,7 +80,7 @@ test.describe('Saayam Signup Page Tests', () => {
       expect((await signupPage.phone.getAttribute('placeholder'))).toBe('Your Phone Number');
 
       await expect(signupPage.country).toBeDisabled();
-      await expect(page.locator('#country option:checked')).toHaveText('United States');
+      await expect(signupPage.country.locator('option:checked')).toHaveText('United States');
 
       await expect(signupPage.password).toBeVisible();
       expect((await signupPage.password.getAttribute('placeholder'))).toBe('Password');
@@ -104,7 +106,7 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.page.setViewportSize({ width: 375, height: 812 });
       await signupPage.goto();
       await expect(signupPage.heading).toBeVisible();
-      const form = signupPage.page.locator('div.flex.items-center.h-full.justify-center');
+      const form = signupPage.page.getByText('Sign UpFirst NameLast');
       await expect(form).toBeVisible();
     });
 
@@ -116,6 +118,7 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.loginLink.click();
       await expect(signupPage.page).toHaveURL(/.*login.*/);
     });
+    
     test('should navigate to Terms and conditions page', async ({ page }) => {
       await signupPage.termsLink.click();
       await expect(signupPage.page).toHaveURL(/.*terms-and-conditions.*/);
@@ -155,7 +158,7 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.confirmPassword.fill(invalidEmailUser.confirmPassword);
       await signupPage.acceptTerms();
       await signupPage.submit();
-
+      await page.waitForLoadState('networkidle');
       const emailError = signupPage.page.getByText('Invalid email address');
       await expect(emailError).toBeVisible();
     });
@@ -167,8 +170,8 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.confirmPassword.fill(passwordMismatchUser.confirmPassword);
       await signupPage.acceptTerms();
       await signupPage.submit();
-
-      const mismatchError = signupPage.page.locator('p:has-text("Passwords do not match")');
+      const mismatchError = signupPage.page.getByText('Passwords do not match');
+      await page.waitForLoadState('networkidle');
       await expect(mismatchError).toBeVisible();
     });
 
@@ -181,19 +184,18 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.confirmPassword.fill(validUser.confirmPassword);
       await signupPage.acceptTerms();
       await signupPage.submit();
-
-      const duplicateError = signupPage.page.locator('p:has-text("User already exists. Please sign in or use a different email.")');
-      await expect(duplicateError).toBeVisible();
+      await page.waitForLoadState('networkidle');
+      await expect(signupPage.emailExists).toHaveText('User already exists. Please sign in or use a different email.');
     });
 
     test('Password visibility toggle icon Validation', async ({ page }) => {
-      const toggleIcon = page.locator('//input[@id="password"]/following-sibling::button');
+      const toggleIcon = page.getByRole('button').nth(5);
       await expect(toggleIcon).toBeVisible();
-      const toggleButton = page.locator("div[class='my-2 flex flex-col relative'] button svg");
+      const toggleButton = page.getByRole('button').nth(5);
       await toggleButton.click();
-      expect(await page.locator('#password').getAttribute('type')).toBe('text');
+      expect(await page.getByRole('textbox', { name: 'Password', exact: true }).getAttribute('type')).toBe('text');
       await toggleButton.click();
-      expect(await page.locator('#password').getAttribute('type')).toBe('password');
+      expect(await page.getByRole('textbox', { name: 'Password', exact: true }).getAttribute('type')).toBe('password');
     });
 
     // Password requirement validations
@@ -218,7 +220,6 @@ test.describe('Saayam Signup Page Tests', () => {
         }
         });
       });
-
     });
   });
 
@@ -234,8 +235,8 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.acceptTerms();
       await signupPage.submit();
       await page.waitForLoadState('networkidle');
-        // The OTP page can take longer to appear; wait for the OTP URL and element (up to 60s)
-      await signupPage.page.waitForURL(/.*verify-otp.*/i, { timeout: 60000 });
+      // The OTP page can take longer to appear; wait for the OTP URL and element (up to 60s)
+      await signupPage.page.waitForURL(/.*verify-otp.*/i, { timeout: 80000 });
       const successMessage = page.getByText('Enter OTP code sent to');
       await expect(successMessage).toBeVisible({ timeout: 60000 });
     });

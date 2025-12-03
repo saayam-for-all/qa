@@ -1,12 +1,15 @@
 //Added this line to generate random user emails as automation runs multiple times
 /* Author: Divyasree */
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 const _uniqueSuffix = Math.floor(Math.random() * 900000) + 100000;
 
 export const signupTestData = {
   validUser: {
     firstName: 'Test',
     lastName: 'User',
-    email: 'saayamqa@yahoo.com',
+    email:process.env.TEST_EMAIL!,
     phone: '4374893033',
     password: 'Test@1234',
     confirmPassword: 'Test@1234',
