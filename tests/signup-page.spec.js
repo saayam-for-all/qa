@@ -223,7 +223,7 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.acceptTerms();
       await signupPage.submit();
       await page.waitForLoadState('networkidle');
-      // The OTP page can take longer to appear; wait for the OTP URL and element (up to 60s)
+      await page.waitForTimeout(5000); 
       await signupPage.page.waitForURL(/.*verify-otp.*/i, { timeout: 120000 });
       const successMessage = page.getByText('Enter OTP code sent to');
       await expect(successMessage).toBeVisible({ timeout: 60000 });
