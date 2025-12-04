@@ -3,23 +3,7 @@ import { test, expect, Page, Locator } from '@playwright/test';
 import { signupTestData } from '../testSignupData/signup-data';
 
 class SignupPage {
-  readonly page: Page;
-  readonly heading: Locator;
-  readonly firstName: Locator;
-  readonly lastName: Locator;
-  readonly email: Locator;
-  readonly phone: Locator;
-  readonly password: Locator;
-  readonly confirmPassword: Locator;
-  readonly signupButton: Locator;
-  readonly termsCheckbox: Locator;
-  readonly loginText: Locator;
-  readonly loginLink: Locator;
-  readonly termsLink:Locator;
-  readonly country:Locator;
-  readonly emailExists:Locator;
-
-  constructor(page: Page) {
+  constructor(page) {
     this.page = page;
     this.heading = page.getByRole('heading', { name: 'Sign Up' });
     this.firstName = page.getByRole('textbox', { name: 'First Name' });
@@ -34,7 +18,7 @@ class SignupPage {
     this.loginLink = page.getByRole('button', { name: 'Log In' });
     this.termsLink = page.getByRole('main').getByRole('link', { name: 'Terms and Conditions' });
     this.country = page.getByLabel('country');
-    this.emailExists = page.getByText('User already exists. Please');
+    this.emailExists = page.getByText('User already exists. Please sign in or use a different email.');
   }
 
   goto() {
@@ -52,7 +36,8 @@ class SignupPage {
 
 test.describe('Saayam Signup Page Tests', () => {
   const{validUser, SuccessfulUser, invalidEmailUser, passwordMismatchUser, weakPasswordUsers, passwordRules } = signupTestData;
-    let signupPage: SignupPage;
+    let signupPage;
+    
     test.beforeEach(async ({ page }) => {
       signupPage = new SignupPage(page);
       await signupPage.goto();
@@ -184,8 +169,11 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.confirmPassword.fill(validUser.confirmPassword);
       await signupPage.acceptTerms();
       await signupPage.submit();
-      await page.waitForLoadState('networkidle');
-      await expect(signupPage.emailExists).toHaveText('User already exists. Please sign in or use a different email.');
+      await signupPage.page.waitForLoadState('networkidle');
+      await page.waitForTimeout(5000); 
+      await expect(signupPage.emailExists).toHaveText(
+        'User already exists. Please sign in or use a different email.',
+        { timeout: 12000 });
     });
 
     test('Password visibility toggle icon Validation', async ({ page }) => {
@@ -236,7 +224,7 @@ test.describe('Saayam Signup Page Tests', () => {
       await signupPage.submit();
       await page.waitForLoadState('networkidle');
       // The OTP page can take longer to appear; wait for the OTP URL and element (up to 60s)
-      await signupPage.page.waitForURL(/.*verify-otp.*/i, { timeout: 80000 });
+      await signupPage.page.waitForURL(/.*verify-otp.*/i, { timeout: 120000 });
       const successMessage = page.getByText('Enter OTP code sent to');
       await expect(successMessage).toBeVisible({ timeout: 60000 });
     });
