@@ -24,21 +24,18 @@ test.describe('Saayam Forgot Password Page Tests', () => {
 
   // Group 2: Navigation Links
   test.describe('Navigation Links', () => {
-    test('should handle Cancel button based on browser behavior', async ({ page }) => {
+    test('should navigate to login page when Cancel button is clicked', async ({ page }) => {
       const cancelBtn = page.getByRole('button', { name: 'Cancel' });
       await expect(cancelBtn).toBeVisible();
+      
+      // Navigate from login page first to establish history
+      await page.goto('https://test-saayam.netlify.app/login');
+      await page.goto('https://test-saayam.netlify.app/forgot-password');
+      
       await cancelBtn.click();
 
-      // Get actual URL after clicking cancel
-      const currentUrl = page.url();
-
-      // Valid outcomes depending on browser
-      const validOutcomes = [
-        'https://test-saayam.netlify.app/forgot-password', // Firefox
-        'about:blank'                                      // Chromium/WebKit
-      ];
-
-      expect(validOutcomes).toContain(currentUrl);
+      // Wait for navigation and verify we're back at login page
+      await expect(page).toHaveURL(/.*login.*/, { timeout: 5000 });
     });
   });
 
@@ -46,12 +43,30 @@ test.describe('Saayam Forgot Password Page Tests', () => {
   test.describe('Form Validation', () => {
     test('should show validation error for empty email', async ({ page }) => {
       const resetBtn = page.getByRole('button', { name: 'Reset' });
-      await resetBtn.click();
-
       const emailInput = page.getByRole('textbox', { name: 'Email *' });
+      
+      await resetBtn.click();
+      
+      // Wait for validation to appear
+      await page.waitForTimeout(500);
+      
       const validationMessage = await emailInput.evaluate(el => el.validationMessage);
-
       expect(validationMessage).toBeTruthy();
+    });
+
+    test('should show validation error for invalid email format', async ({ page }) => {
+      const emailInput = page.getByRole('textbox', { name: 'Email *' });
+      const resetBtn = page.getByRole('button', { name: 'Reset' });
+      
+      await emailInput.fill('invalid-email-format');
+      await resetBtn.click();
+      
+      // Wait for validation to appear
+      await page.waitForTimeout(500);
+      
+      const validationMessage = await emailInput.evaluate(el => el.validationMessage);
+      expect(validationMessage).toBeTruthy();
+      expect(validationMessage.toLowerCase()).toMatch(/email|invalid|format/i);
     });
   });
 
@@ -64,12 +79,12 @@ test.describe('Saayam Forgot Password Page Tests', () => {
       await emailInput.fill('test@example.com');
       await resetBtn.click();
 
-      // App navigates to verify-account page
-      await expect(page).toHaveURL('https://test-saayam.netlify.app/verify-account');
+      // Wait for navigation to verify-account page
+      await expect(page).toHaveURL(/.*verify-account.*/, { timeout: 10000 });
 
       // Success message appears on this page
-      const successMessage = page.getByText(/reset|email|sent|verify/i);
-      await expect(successMessage).toBeVisible({ timeout: 7000 });
+      const successMessage = page.getByText('Password Reset');
+      await expect(successMessage).toBeVisible({ timeout: 10000 });
     });
   });
 
