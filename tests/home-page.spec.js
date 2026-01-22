@@ -21,6 +21,23 @@ class HomePage {
     this.tagline = page.getByText('Real help. Real people. Right when you need it.');
     this.mainHeading = page.getByRole('heading', { name: /Need help.*Here to help/i });
     this.subHeading = page.getByText(/At Saayam for All.*your support/i);
+    
+    // Footer Navigation Items
+    this.footerLogo = page.locator('footer img[alt*="Saayam"]').first();
+    this.footerHomeLink = page.locator('footer').getByRole('link', { name: 'Home' });
+    this.footerOurMissionLink = page.locator('footer').getByRole('link', { name: 'Our Mission' });
+    this.footerOurTeamLink = page.locator('footer').getByRole('link', { name: 'Our Team' });
+    this.footerHowWeOperateLink = page.locator('footer').getByRole('link', { name: 'How We Operate' });
+    this.footerContactUsLink = page.locator('footer').getByRole('link', { name: 'Contact Us' });
+    this.footerDonateButton = page.locator('footer').getByRole('link', { name: 'Donate' });
+    
+    // Footer Legal Links
+    this.footerSiteMapLink = page.locator('footer').getByRole('link', { name: 'Site Map' });
+    this.footerTermsLink = page.locator('footer').getByRole('link', { name: 'Terms and Conditions' });
+    this.footerPrivacyLink = page.locator('footer').getByRole('link', { name: 'Privacy Policy' });
+    
+    // Footer Copyright
+    this.footerCopyright = page.getByText('Copyright © 2025 Saayam For All. All rights reserved.');
   }
 
   async goto() {
@@ -42,10 +59,14 @@ class HomePage {
   async clickVolunteerServices() {
     await this.volunteerServicesDropdown.click();
   }
+
+  async scrollToFooter() {
+    await this.footerCopyright.scrollIntoViewIfNeeded();
+  }
 }
 
 test.describe('Saayam Home Page Tests', () => {
-  const { pageContent, navigation, navigationUrls } = homeTestData;
+  const { pageContent, navigation, navigationUrls, footerNavigation, footerLegal, footerContent } = homeTestData;
   let homePage;
   
   test.beforeEach(async ({ page }) => {
@@ -397,6 +418,139 @@ test.describe('Saayam Home Page Tests', () => {
       
       await expect(card1).toBeVisible();
       await expect(card3).toBeVisible();
+    });
+  });
+
+  // Group 7: Footer Navigation and Content
+  test.describe('Footer Navigation and Content', () => {
+    test.beforeEach(async ({ page }) => {
+      // Scroll to footer before each footer test
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
+    });
+
+    test('should display footer logo', async ({ page }) => {
+      await expect(homePage.footerLogo).toBeVisible();
+    });
+
+    test('should display all footer navigation links', async ({ page }) => {
+      await expect(homePage.footerHomeLink).toBeVisible();
+      await expect(homePage.footerOurMissionLink).toBeVisible();
+      await expect(homePage.footerOurTeamLink).toBeVisible();
+      await expect(homePage.footerHowWeOperateLink).toBeVisible();
+      await expect(homePage.footerContactUsLink).toBeVisible();
+      await expect(homePage.footerDonateButton).toBeVisible();
+    });
+
+    test('should display correct footer navigation text', async ({ page }) => {
+      const homeText = await homePage.footerHomeLink.textContent();
+      expect(homeText?.trim()).toBe(footerNavigation.home);
+      
+      const missionText = await homePage.footerOurMissionLink.textContent();
+      expect(missionText?.trim()).toBe(footerNavigation.ourMission);
+      
+      const teamText = await homePage.footerOurTeamLink.textContent();
+      expect(teamText?.trim()).toBe(footerNavigation.ourTeam);
+      
+      const operateText = await homePage.footerHowWeOperateLink.textContent();
+      expect(operateText?.trim()).toBe(footerNavigation.howWeOperate);
+      
+      const contactText = await homePage.footerContactUsLink.textContent();
+      expect(contactText?.trim()).toBe(footerNavigation.contactUs);
+      
+      const donateText = await homePage.footerDonateButton.textContent();
+      expect(donateText?.trim()).toBe(footerNavigation.donate);
+    });
+
+    test('should display footer legal links', async ({ page }) => {
+      await expect(homePage.footerSiteMapLink).toBeVisible();
+      await expect(homePage.footerTermsLink).toBeVisible();
+      await expect(homePage.footerPrivacyLink).toBeVisible();
+    });
+
+    test('should display correct footer legal link text', async ({ page }) => {
+      const siteMapText = await homePage.footerSiteMapLink.textContent();
+      expect(siteMapText?.trim()).toBe(footerLegal.siteMap);
+      
+      const termsText = await homePage.footerTermsLink.textContent();
+      expect(termsText?.trim()).toBe(footerLegal.termsAndConditions);
+      
+      const privacyText = await homePage.footerPrivacyLink.textContent();
+      expect(privacyText?.trim()).toBe(footerLegal.privacyPolicy);
+    });
+
+    test('should display copyright text', async ({ page }) => {
+      await expect(homePage.footerCopyright).toBeVisible();
+      const copyrightText = await homePage.footerCopyright.textContent();
+      expect(copyrightText?.trim()).toBe(footerContent.copyright);
+    });
+
+    test('should navigate to home from footer', async ({ page }) => {
+      await homePage.footerHomeLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.home);
+    });
+
+    test('should navigate to Our Mission from footer', async ({ page }) => {
+      await homePage.footerOurMissionLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.ourMission);
+    });
+
+    test('should navigate to Our Team from footer', async ({ page }) => {
+      await homePage.footerOurTeamLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.ourTeam);
+    });
+
+    test('should navigate to How We Operate from footer', async ({ page }) => {
+      await homePage.footerHowWeOperateLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.howWeOperate);
+    });
+
+    test('should navigate to Contact Us from footer', async ({ page }) => {
+      await homePage.footerContactUsLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.contactUs);
+    });
+
+    test('should navigate to donate page from footer', async ({ page }) => {
+      await homePage.footerDonateButton.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.donate);
+    });
+
+    test('should navigate to Site Map from footer', async ({ page }) => {
+      await homePage.footerSiteMapLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.siteMap);
+    });
+
+    test('should navigate to Terms and Conditions from footer', async ({ page }) => {
+      await homePage.footerTermsLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.terms);
+    });
+
+    test('should navigate to Privacy Policy from footer', async ({ page }) => {
+      await homePage.footerPrivacyLink.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(navigationUrls.privacy);
+    });
+
+    test('footer links should have hover effects', async ({ page }) => {
+      const footerLinks = [
+        homePage.footerHomeLink,
+        homePage.footerOurMissionLink,
+        homePage.footerContactUsLink,
+      ];
+
+      for (const link of footerLinks) {
+        await link.hover();
+        await page.waitForTimeout(200);
+        await expect(link).toBeVisible();
+      }
     });
   });
 });

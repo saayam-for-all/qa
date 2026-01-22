@@ -19,6 +19,28 @@ export const homeTestData = {
     logIn: 'Log In',
   },
   
+  // Footer Navigation Items
+  footerNavigation: {
+    home: 'Home',
+    ourMission: 'Our Mission',
+    ourTeam: 'Our Team',
+    howWeOperate: 'How We Operate',
+    contactUs: 'Contact Us',
+    donate: 'Donate',
+  },
+  
+  // Footer Legal Links
+  footerLegal: {
+    siteMap: 'Site Map',
+    termsAndConditions: 'Terms and Conditions',
+    privacyPolicy: 'Privacy Policy',
+  },
+  
+  // Footer Content
+  footerContent: {
+    copyright: 'Copyright © 2025 Saayam For All. All rights reserved.',
+  },
+  
   // About Us Dropdown Items (update these based on actual menu items)
   aboutUsDropdown: [
     'Our Story',
@@ -51,9 +73,15 @@ export const homeTestData = {
   navigationUrls: {
     home: /.*\/(home)?$/,
     aboutUs: /.*about.*/i,
+    ourMission: /.*mission.*/i,
+    ourTeam: /.*team.*/i,
+    howWeOperate: /.*operate.*/i,
     volunteerServices: /.*volunteer.*/i,
     contactUs: /.*contact.*/i,
     donate: /.*donate.*/i,
     logIn: /.*login.*/i,
+    siteMap: /.*sitemap.*/i,
+    terms: /.*terms.*/i,
+    privacy: /.*privacy.*/i,
   },
 };
