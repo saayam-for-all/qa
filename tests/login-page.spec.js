@@ -37,7 +37,7 @@
 
 
 import { test, expect } from '@playwright/test';
-import { loginTestData } from '../testLoginData/login-data';
+import { loginTestData } from '../test-data';
 
 test.describe('Saayam Login Page Tests', () => {
 const { validCredentials, invalidCredentials } = loginTestData;

@@ -1,6 +1,6 @@
 /* Author: Divyasree */
 import { test, expect, Page, Locator } from '@playwright/test';
-import { signupTestData } from '../testSignupData/signup-data';
+import { signupTestData } from '../test-data';
 
 class SignupPage {
   constructor(page) {

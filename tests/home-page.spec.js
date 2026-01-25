@@ -1,6 +1,6 @@
 /* Author: Mugdha Joshi */
 import { test, expect } from '@playwright/test';
-import { homeTestData } from '../testHomeData/home-data';
+import { homeTestData } from '../test-data';
 
 class HomePage {
   constructor(page) {

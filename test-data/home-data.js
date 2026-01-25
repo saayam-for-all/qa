@@ -1,4 +1,4 @@
-// testHomeData/home-data.js
+// test-data/home-data.js
 export const homeTestData = {
   pageUrl: 'https://test-saayam.netlify.app/',
   

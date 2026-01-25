@@ -1,4 +1,5 @@
-//Added this line to generate random user emails as automation runs multiple times
+// test-data/signup-data.js
+// Added this line to generate random user emails as automation runs multiple times
 /* Author: Divyasree */
 import dotenv from 'dotenv';
 dotenv.config();
@@ -9,7 +10,7 @@ export const signupTestData = {
   validUser: {
     firstName: 'Test',
     lastName: 'User',
-    email:process.env.TEST_EMAIL,
+    email: process.env.TEST_EMAIL,
     phone: '4374893033',
     password: 'Test@1234',
     confirmPassword: 'Test@1234',
