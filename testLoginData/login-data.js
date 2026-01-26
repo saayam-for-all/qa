@@ -1,13 +1,12 @@
-// test-data/login-data.js
-import dotenv from 'dotenv';
-dotenv.config();
+// testLoginData/login-data.js
+
 export const loginTestData = {
-    validCredentials: {
-      email: process.env.TEST_EMAIL,
-      password: process.env.TEST_PASSWORD
-    },
-    invalidCredentials: {
-      email: 'invalid@example.com',
-      password: 'wrongpassword'
-    }
-  };
+  validCredentials: {
+    email: 'yashysp033@gmail.com',     // your real login
+    password: 'yaSH1204!!',            // your real password
+  },
+  invalidCredentials: {
+    email: 'invalid@example.com',
+    password: 'wrongpassword',
+  },
+};
