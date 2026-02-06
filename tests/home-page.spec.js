@@ -61,7 +61,8 @@ class HomePage {
   }
 
   async scrollToFooter() {
-    await this.footerCopyright.scrollIntoViewIfNeeded();
+    const footer = this.page.locator('footer');
+  await footer.scrollIntoViewIfNeeded();
   }
 }
 
@@ -71,7 +72,9 @@ test.describe('Saayam Home Page Tests', () => {
   
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
-    await homePage.goto();
+  await homePage.goto();
+  await homePage.scrollToFooter();
+  await expect(page.locator('footer')).toBeVisible();
   });
 
   // Group 1: Page Load and Elements
@@ -426,7 +429,7 @@ test.describe('Saayam Home Page Tests', () => {
     test.beforeEach(async ({ page }) => {
       // Scroll to footer before each footer test
       await homePage.scrollToFooter();
-      await page.waitForTimeout(300);
+      await expect(page.locator('footer')).toBeVisible();
     });
 
     test('should display footer logo', async ({ page }) => {
