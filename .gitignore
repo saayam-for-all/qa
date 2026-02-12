@@ -1,5 +1,4 @@
-.env
-.DS_Store
+
 # Playwright
 node_modules/
 /test-results/
@@ -7,3 +6,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+.env
+qa/playwright-report/
+qa/test-results/
+
