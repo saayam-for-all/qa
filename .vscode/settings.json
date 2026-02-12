@@ -1,0 +1,4 @@
+{
+    "testing.automaticallyDiscoverTests": true,
+    "playwright.configPath": "playwright.config.js"
+}
