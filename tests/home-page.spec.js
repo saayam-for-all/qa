@@ -37,7 +37,7 @@ class HomePage {
     this.footerPrivacyLink = page.locator('footer').getByRole('link', { name: 'Privacy Policy' });
     
     // Footer Copyright
-    this.footerCopyright = page.getByText('Copyright © 2025 Saayam For All. All rights reserved.');
+    this.footerCopyright = page.getByText('Copyright © 2026 Saayam For All. All rights reserved.');
   }
 
   async goto() {
@@ -68,37 +68,42 @@ class HomePage {
 test.describe('Saayam Home Page Tests', () => {
   const { pageContent, navigation, navigationUrls, footerNavigation, footerLegal, footerContent } = homeTestData;
   let homePage;
-  
-  test.beforeEach(async ({ page }) => {
-    homePage = new HomePage(page);
-    await homePage.goto();
-  });
 
   // Group 1: Page Load and Elements
   test.describe('Page Load and Elements', () => {
     test('should load home page with correct URL', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await expect(page).toHaveURL(homeTestData.pageUrl);
       const currentUrl = page.url();
       expect(currentUrl).toBe(homeTestData.pageUrl);
     });
 
     test('should display logo', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await expect(homePage.logo).toBeVisible();
     });
 
     test('should display tagline correctly', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await expect(homePage.tagline).toBeVisible();
       const taglineText = await homePage.tagline.textContent();
       expect(taglineText?.trim()).toBe(pageContent.tagline);
     });
 
     test('should display main heading correctly', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await expect(homePage.mainHeading).toBeVisible();
       const headingText = await homePage.mainHeading.textContent();
       expect(headingText?.trim()).toBe(pageContent.mainHeading);
     });
 
     test('should display sub-heading correctly', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await expect(homePage.subHeading).toBeVisible();
       const subHeadingText = await homePage.subHeading.textContent();
       expect(subHeadingText).toContain('At Saayam for All');
@@ -106,6 +111,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should display all navigation items', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await expect(homePage.homeLink).toBeVisible();
       await expect(homePage.aboutUsDropdown).toBeVisible();
       await expect(homePage.volunteerServicesDropdown).toBeVisible();
@@ -115,6 +122,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should display service cards', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Check for service card container or individual cards using more generic selector
       const serviceCards = page.locator('section img, div img').filter({ hasNotText: 'logo' });
       const cardCount = await serviceCards.count();
@@ -123,6 +132,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should display correct navigation text', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       const homeText = await homePage.homeLink.textContent();
       expect(homeText?.trim()).toBe(navigation.home);
       
@@ -143,23 +154,31 @@ test.describe('Saayam Home Page Tests', () => {
   // Group 2: Navigation Links
   test.describe('Navigation Links', () => {
     test('should navigate to home page when Home link is clicked', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await homePage.homeLink.click();
       await expect(page).toHaveURL(navigationUrls.home);
     });
 
     test('should navigate to contact us page', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await homePage.contactUsLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.contactUs);
     });
 
     test('should navigate to donate page', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await homePage.donateButton.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.donate);
     });
 
     test('should navigate to login page', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await homePage.logInLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.logIn);
@@ -169,6 +188,8 @@ test.describe('Saayam Home Page Tests', () => {
   // Group 3: Dropdown Functionality
   test.describe('Dropdown Menus', () => {
     test('should show About Us dropdown on hover/click', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Try hover first
       await homePage.hoverAboutUs();
       await page.waitForTimeout(500);
@@ -187,6 +208,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should show Volunteer Services dropdown on hover/click', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Try hover first
       await homePage.hoverVolunteerServices();
       await page.waitForTimeout(500);
@@ -205,6 +228,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should navigate to About Us submenu items', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Open About Us dropdown
       await homePage.clickAboutUs();
       await page.waitForTimeout(500);
@@ -230,6 +255,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should navigate to Volunteer Services submenu items', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Open Volunteer Services dropdown
       await homePage.clickVolunteerServices();
       await page.waitForTimeout(500);
@@ -258,6 +285,8 @@ test.describe('Saayam Home Page Tests', () => {
   // Group 4: Page Responsiveness and Accessibility
   test.describe('Responsiveness and Layout', () => {
     test('should load correctly on mobile viewport', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await page.setViewportSize({ width: 375, height: 812 });
       await homePage.goto();
       
@@ -275,6 +304,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should load correctly on tablet viewport', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await page.setViewportSize({ width: 768, height: 1024 });
       await homePage.goto();
       
@@ -284,6 +315,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should load correctly on desktop viewport', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await page.setViewportSize({ width: 1920, height: 1080 });
       await homePage.goto();
       
@@ -297,6 +330,8 @@ test.describe('Saayam Home Page Tests', () => {
   // Group 5: Interactive Elements
   test.describe('Interactive Elements', () => {
     test('should have clickable logo that navigates to home', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Navigate to a different page first
       await homePage.contactUsLink.click();
       await page.waitForLoadState('networkidle');
@@ -332,6 +367,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should have hover effects on navigation items', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Hover over different navigation items and check for style changes
       const navItems = [
         homePage.homeLink,
@@ -349,6 +386,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should have working Donate button with visual feedback', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await expect(homePage.donateButton).toBeVisible();
       await expect(homePage.donateButton).toBeEnabled();
       
@@ -366,12 +405,16 @@ test.describe('Saayam Home Page Tests', () => {
   // Group 6: Content and SEO
   test.describe('Content and SEO', () => {
     test('should have proper page title', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       const title = await page.title();
       expect(title).toBeTruthy();
       expect(title.length).toBeGreaterThan(0);
     });
 
     test('should have meta description', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Try to get meta description with a short timeout
       try {
         const metaElement = page.locator('meta[name="description"]');
@@ -392,6 +435,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should display service cards with images', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Find all images on the page (excluding logo)
       const allImages = page.locator('img');
       const imageCount = await allImages.count();
@@ -412,6 +457,8 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should have all service card text content', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       // Check for the visible service card titles from the screenshot
       const card1 = page.getByText('Sarve jana sukhino bhavantu');
       const card3 = page.getByText('Manava sevaye Madhava seva');
@@ -423,17 +470,19 @@ test.describe('Saayam Home Page Tests', () => {
 
   // Group 7: Footer Navigation and Content
   test.describe('Footer Navigation and Content', () => {
-    test.beforeEach(async ({ page }) => {
-      // Scroll to footer before each footer test
+    test('should display footer logo', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
       await homePage.scrollToFooter();
       await page.waitForTimeout(300);
-    });
-
-    test('should display footer logo', async ({ page }) => {
       await expect(homePage.footerLogo).toBeVisible();
     });
 
     test('should display all footer navigation links', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await expect(homePage.footerHomeLink).toBeVisible();
       await expect(homePage.footerOurMissionLink).toBeVisible();
       await expect(homePage.footerOurTeamLink).toBeVisible();
@@ -443,6 +492,10 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should display correct footer navigation text', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       const homeText = await homePage.footerHomeLink.textContent();
       expect(homeText?.trim()).toBe(footerNavigation.home);
       
@@ -463,12 +516,20 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should display footer legal links', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await expect(homePage.footerSiteMapLink).toBeVisible();
       await expect(homePage.footerTermsLink).toBeVisible();
       await expect(homePage.footerPrivacyLink).toBeVisible();
     });
 
     test('should display correct footer legal link text', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       const siteMapText = await homePage.footerSiteMapLink.textContent();
       expect(siteMapText?.trim()).toBe(footerLegal.siteMap);
       
@@ -480,66 +541,110 @@ test.describe('Saayam Home Page Tests', () => {
     });
 
     test('should display copyright text', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await expect(homePage.footerCopyright).toBeVisible();
       const copyrightText = await homePage.footerCopyright.textContent();
       expect(copyrightText?.trim()).toBe(footerContent.copyright);
     });
 
     test('should navigate to home from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerHomeLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.home);
     });
 
     test('should navigate to Our Mission from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerOurMissionLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.ourMission);
     });
 
     test('should navigate to Our Team from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerOurTeamLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.ourTeam);
     });
 
     test('should navigate to How We Operate from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerHowWeOperateLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.howWeOperate);
     });
 
     test('should navigate to Contact Us from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerContactUsLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.contactUs);
     });
 
     test('should navigate to donate page from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerDonateButton.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.donate);
     });
 
     test('should navigate to Site Map from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerSiteMapLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.siteMap);
     });
 
     test('should navigate to Terms and Conditions from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerTermsLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.terms);
     });
 
     test('should navigate to Privacy Policy from footer', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       await homePage.footerPrivacyLink.click();
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveURL(navigationUrls.privacy);
     });
 
     test('footer links should have hover effects', async ({ page }) => {
+      homePage = new HomePage(page);
+      await homePage.goto();
+      await homePage.scrollToFooter();
+      await page.waitForTimeout(300);
       const footerLinks = [
         homePage.footerHomeLink,
         homePage.footerOurMissionLink,

@@ -38,7 +38,7 @@ export const homeTestData = {
   
   // Footer Content
   footerContent: {
-    copyright: 'Copyright © 2025 Saayam For All. All rights reserved.',
+    copyright: 'Copyright © 2026 Saayam For All. All rights reserved.',
   },
   
   // About Us Dropdown Items (update these based on actual menu items)
