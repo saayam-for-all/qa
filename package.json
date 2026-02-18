@@ -1,28 +1,17 @@
 {
-  "name": "saayam-webapp-e2e-playwright",
+  "name": "saayam-qa",
   "version": "1.0.0",
-  "description": "Playwright E2E testing suite for Saayam webapp.",
+  "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "playwright test",
-    "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug",
-    "test:headed": "playwright test --headed",
-    "codegen": "playwright codegen"
-  },
-  "keywords": [
-    "playwright",
-    "e2e",
-    "testing",
-    "qa"
-  ],
-  "author": "Sriabhinay Kusuma",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.56.1",
-    "@types/node": "^24.9.1"
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.2.3"
   },
   "dependencies": {
-    "dotenv": "^17.2.3"
+    "dotenv": "^17.2.4"
   }
 }
