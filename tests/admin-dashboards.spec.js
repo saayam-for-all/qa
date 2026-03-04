@@ -178,6 +178,40 @@ test.describe('Super Admin dashboard', () => {
     await expectRowsPerView(5);
   });
 
+  test('All Requests - Request ID opens details for the same request name', async ({ page }) => {
+    await openAllRequestsTab(page);
+
+    const table = page.locator('table[data-testid="table"]');
+    const headers = table.locator('thead th');
+    const headerCount = await headers.count();
+    let requestNameColumnIndex = -1;
+
+    for (let i = 0; i < headerCount; i += 1) {
+      const headerText = (await headers.nth(i).innerText()).trim();
+      if (/request\s*name|subject/i.test(headerText)) {
+        requestNameColumnIndex = i;
+        break;
+      }
+    }
+
+    expect(requestNameColumnIndex, 'Request Name/Subject column was not found in All Requests table headers').toBeGreaterThanOrEqual(0);
+
+    const firstDataRow = table.locator('tbody tr').first();
+    await expect(firstDataRow).toBeVisible();
+
+    const requestIdLink = firstDataRow.getByRole('link', { name: /^REQ-/i }).first();
+    await expect(requestIdLink).toBeVisible();
+    const requestId = (await requestIdLink.innerText()).trim();
+
+    const requestName = (await firstDataRow.getByRole('cell').nth(requestNameColumnIndex).innerText()).trim();
+    expect(requestName, `Request Name for ${requestId} should not be empty`).not.toBe('');
+
+    await requestIdLink.click();
+
+    await expect(page.getByRole('heading', { name: 'Request Details' })).toBeVisible();
+    await expect(page.getByText(requestName, { exact: false })).toBeVisible();
+  });
+
   test('Application Analytics - Requests tab loads core charts and controls', async ({ page }) => {
     await page.getByRole('button', { name: /^analytics$/i }).click();
     await page.getByRole('button', { name: /^application analytics$/i }).click();
