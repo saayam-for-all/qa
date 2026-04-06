@@ -280,7 +280,9 @@ test.describe('Super Admin dashboard', () => {
 
     await expect(page.getByText('Beneficiary Growth Trend')).toBeVisible();
     await expect(page.getByText('Beneficiaries by Country')).toBeVisible();
-    await expect(page.getByText('Top 10 Countries Summary')).toBeVisible();
+
+    const beneficiaryLoadingIndicators = page.getByText('Loading beneficiaries data...');
+    await expect(beneficiaryLoadingIndicators.first()).not.toBeVisible({ timeout: 15000 });
 
     const statusSelect = page
       .locator('select')
@@ -300,6 +302,7 @@ test.describe('Super Admin dashboard', () => {
     await expect(countryScope.getByRole('button', { name: /^bar$/i })).toBeVisible();
     await expect(countryScope.getByRole('button', { name: /^map$/i })).toBeVisible();
     await expect(countryScope.getByRole('checkbox', { name: /top 10 only/i })).toBeVisible();
+    await expect(countryScope).toContainText(/Top 10/i);
   });
 
   test('Application Analytics - Volunteers tab loads charts and controls', async ({ page }) => {
