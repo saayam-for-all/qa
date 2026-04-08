@@ -130,7 +130,7 @@ test.describe('Super Admin dashboard', () => {
     test(`Filter by Status - ${status}`, async ({ page }) => {
       await openAllRequestsTab(page);
       await selectFilterOption(page, 'Status', status);
-      await assertAllRowsMatchColumn(page, 0, (text) => normalize(text) === normalize(status));
+      await assertAllRowsMatchColumn(page, 1, (text) => normalize(text) === normalize(status));
     });
   }
 
