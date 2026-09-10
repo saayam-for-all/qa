@@ -27,38 +27,53 @@ module.exports = defineConfig({
 
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*\.setup\.js/,
+    },
+
+    {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
 
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        storageState: 'playwright/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
 
     {
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
+        storageState: 'playwright/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
 
     {
       name: 'pixel-5',
       use: {
         ...devices['Pixel 5'],
+        storageState: 'playwright/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
 
     {
       name: 'iphone-16-pro',
       use: {
         ...devices['iPhone 16 Pro'],
+        storageState: 'playwright/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
 
     {
@@ -71,7 +86,9 @@ module.exports = defineConfig({
         },
         isMobile: true,
         hasTouch: true,
+        storageState: 'playwright/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
   ],
 });

@@ -1,4 +1,4 @@
-import { test as setup } from '@playwright/test';
+const { test: setup, expect } = require('@playwright/test');
 
 const authFile = 'playwright/.auth/user.json';
 
@@ -28,21 +28,42 @@ setup('authenticate', async ({ page }) => {
     .fill(password);
 
   await page
+    .getByRole('main')
     .getByRole('button', {
       name: 'Log In',
       exact: true,
     })
-    .last()
     .click();
 
-  await page.waitForURL(
-    url => !url.pathname.includes('/login'),
-    {
-      timeout: 60000,
-    }
-  );
+  await expect(page).toHaveURL(/\/dashboard\/?$/, {
+    timeout: 15000,
+  });
+
+  console.log('POST-LOGIN URL:', page.url());
+
+  await expect(
+    page
+      .getByText('Create Help Request', {
+        exact: true,
+      })
+      .first()
+  ).toBeVisible({
+    timeout: 15000,
+  });
+
+  await expect(
+    page
+      .getByText('My Requests', {
+        exact: true,
+      })
+      .first()
+  ).toBeVisible({
+    timeout: 15000,
+  });
 
   await page.context().storageState({
     path: authFile,
   });
+
+  console.log('AUTH STATE SAVED:', authFile);
 });
