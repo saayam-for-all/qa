@@ -74,11 +74,24 @@ test.describe('LinkedIn Login Integration - Issue #69', () => {
     await expect(page).toHaveURL(/\/login/);
   });
 
-  test('TC-LN-004: No console errors on login page load', async ({ page }) => {
+    test('TC-LN-004: No console errors on login page load', async ({ page }) => {
     const errors = [];
 
+    // Known third-party noise, unrelated to the app's own code — confirmed
+    // via root-cause investigation: blocked ad-network resource (Chromium)
+    // and Google Analytics cross-domain cookie rejections (Firefox/Mobile
+    // Firefox). Filtered out rather than left as a flaky/browser-dependent failure.
+    const KNOWN_THIRD_PARTY_NOISE = [
+      /doubleclick\.net/i,
+      /googleads/i,
+      /has been rejected for invalid domain/i, // GA cross-domain cookies (_ga, _ga_*)
+    ];
+
     page.on('console', msg => {
-      if (msg.type() === 'error') errors.push(msg.text());
+      if (msg.type() !== 'error') return;
+      const text = msg.text();
+      const isKnownNoise = KNOWN_THIRD_PARTY_NOISE.some(pattern => pattern.test(text));
+      if (!isKnownNoise) errors.push(text);
     });
 
     await page.reload({ waitUntil: 'domcontentloaded' });
