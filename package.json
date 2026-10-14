@@ -1,0 +1,24 @@
+{
+  "name": "qa",
+  "version": "1.0.0",
+  "description": "Repository for all the QA related code and documents",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KotamarthiSriharsha/qa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/KotamarthiSriharsha/qa/issues"
+  },
+  "homepage": "https://github.com/KotamarthiSriharsha/qa#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}
