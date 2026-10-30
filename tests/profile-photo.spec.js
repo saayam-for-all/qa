@@ -1,3 +1,24 @@
+/*
+8 automated Playwright tests in tests/profile-photo.spec.js for Issue #44:
+
+Test                          What it checks
+
+TC-PP-001                Profile photo modal opens and Save is disabled by default
+TC-PP-002                Valid PNG shows a preview, Save and Cancel enabled
+TC-PP-003                Valid JPG shows a preview, Save and Cancel enabled
+TC-PP-004                Cancel after upload discards the change and closes the modal
+TC-PP-005                A file over 5 MB is rejected and Save stays disabled
+TC-PP-006                An unsupported format (GIF) is rejected with the error message
+TC-PP-007                The error clears after you select a valid file
+TC-PP-008                Upload and Save works (the modal closes after saving)
+
+Run commands:
+   npx playwright test tests/profile-photo.spec.js --project=chromium --reporter=list 2>&1 | tee log-chromium.txt
+   npx playwright test tests/profile-photo.spec.js --project=firefox --reporter=list 2>&1 | tee log-firefox.txt
+   npx playwright test tests/profile-photo.spec.js --project=webkit --reporter=list 2>&1 | tee log-webkit.txt
+
+*/ 
+
 const { test, expect } = require('@playwright/test');
 
 // ---- EDIT THESE if a locator doesn't match (inspect element in the app) ----
