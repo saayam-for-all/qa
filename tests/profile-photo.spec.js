@@ -121,9 +121,11 @@ test.describe('Profile Photo - Issue #44', () => {
     await expect(btn(page, 'Save')).toBeDisabled();
   });
 
-  test('TC-PP-010: Network error during save shows a message and keeps Save enabled', async ({ page }) => {
-    // EDIT this route pattern to match the actual photo-upload endpoint
-    await page.route('**/profile/photo*', (route) => route.abort('failed'));
+    test('TC-PP-010: Network error during save shows a message and keeps Save enabled', async ({ page }) => {
+    await page.route('**/*', (route) => {
+      if (route.request().method() === 'POST') return route.abort('failed');
+      return route.continue();
+    });
 
     await fileInput(page).setInputFiles(validPng);
     await btn(page, 'Save').click();
@@ -134,8 +136,8 @@ test.describe('Profile Photo - Issue #44', () => {
 
   test('TC-PP-011: Retrying Save after a failed attempt succeeds', async ({ page }) => {
     let attempt = 0;
-    // EDIT this route pattern to match the actual photo-upload endpoint
-    await page.route('**/profile/photo*', (route) => {
+    await page.route('**/*', (route) => {
+      if (route.request().method() !== 'POST') return route.continue();
       attempt += 1;
       if (attempt === 1) return route.abort('failed');
       return route.continue();
