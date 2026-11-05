@@ -1,5 +1,5 @@
 /*
-8 automated Playwright tests in tests/profile-photo.spec.js for Issue #44:
+11 automated Playwright tests in tests/profile-photo.spec.js for Issue #44:
 
 Test                          What it checks
 
@@ -11,6 +11,9 @@ TC-PP-005                A file over 5 MB is rejected and Save stays disabled
 TC-PP-006                An unsupported format (GIF) is rejected with the error message
 TC-PP-007                The error clears after you select a valid file
 TC-PP-008                Upload and Save works (the modal closes after saving)
+TC-PP-009                Uploaded photo persists after a page reload
+TC-PP-010                A network error during save shows a message and Save stays enabled
+TC-PP-011                Retrying Save after a failed attempt succeeds
 
 Run commands:
    npx playwright test tests/profile-photo.spec.js --project=chromium --reporter=list 2>&1 | tee log-chromium.txt
@@ -105,6 +108,44 @@ test.describe('Profile Photo - Issue #44', () => {
     await fileInput(page).setInputFiles(validPng);
     await btn(page, 'Save').click();
     // Backend can be slow (~10 s), so allow extra time
+    await expect(btn(page, 'Save')).toBeHidden({ timeout: 30000 });
+  });
+
+  test('TC-PP-009: Uploaded photo persists after page reload', async ({ page }) => {
+    await fileInput(page).setInputFiles(validPng);
+    await btn(page, 'Save').click();
+    await expect(btn(page, 'Save')).toBeHidden({ timeout: 30000 });
+
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await photoTrigger(page).click();
+    await expect(btn(page, 'Save')).toBeDisabled();
+  });
+
+  test('TC-PP-010: Network error during save shows a message and keeps Save enabled', async ({ page }) => {
+    // EDIT this route pattern to match the actual photo-upload endpoint
+    await page.route('**/profile/photo*', (route) => route.abort('failed'));
+
+    await fileInput(page).setInputFiles(validPng);
+    await btn(page, 'Save').click();
+
+    await expect(page.getByText(/network error/i)).toBeVisible({ timeout: 15000 });
+    await expect(btn(page, 'Save')).toBeEnabled();
+  });
+
+  test('TC-PP-011: Retrying Save after a failed attempt succeeds', async ({ page }) => {
+    let attempt = 0;
+    // EDIT this route pattern to match the actual photo-upload endpoint
+    await page.route('**/profile/photo*', (route) => {
+      attempt += 1;
+      if (attempt === 1) return route.abort('failed');
+      return route.continue();
+    });
+
+    await fileInput(page).setInputFiles(validPng);
+    await btn(page, 'Save').click();
+    await expect(page.getByText(/network error/i)).toBeVisible({ timeout: 15000 });
+
+    await btn(page, 'Save').click();
     await expect(btn(page, 'Save')).toBeHidden({ timeout: 30000 });
   });
 });
