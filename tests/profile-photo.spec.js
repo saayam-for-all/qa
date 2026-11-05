@@ -15,6 +15,11 @@ TC-PP-009                Uploaded photo persists after a page reload
 TC-PP-010                A network error during save shows a message and Save stays enabled
 TC-PP-011                Retrying Save after a failed attempt succeeds
 
+Setup (run once per environment):
+   npm install
+   npx playwright install --with-deps chromium firefox webkit
+
+
 Run commands:
    npx playwright test tests/profile-photo.spec.js --project=chromium --reporter=list 2>&1 | tee log-chromium.txt
    npx playwright test tests/profile-photo.spec.js --project=firefox --reporter=list 2>&1 | tee log-firefox.txt
